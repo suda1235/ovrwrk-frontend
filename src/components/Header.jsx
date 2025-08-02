@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
 
-const Header = () => {
+const Header = ({ onSearchClick, showSearch }) => {
     const { cartItems } = useContext(CartContext);
     const location = useLocation();
     const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -44,6 +44,15 @@ const Header = () => {
                         </Link>
                     </li>
                 </ul>
+
+                <button
+                    className="btn btn-link p-0 me-3"
+                    style={{ fontSize: "1.6rem", color: "#222" }}
+                    aria-label={showSearch ? "Close search" : "Open search"}
+                    onClick={onSearchClick}
+                >
+                    <i className={`bi ${showSearch ? "bi-x-lg" : "bi-search"}`}></i>
+                </button>
                 <Link to="/cart" className="btn btn-outline-dark position-relative">
                     <i className="bi bi-bag text-dark" style={{ fontSize: "1.2em", marginRight: "0.5em" }}></i>
                     Cart
