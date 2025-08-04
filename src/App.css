@@ -1,3 +1,29 @@
+/**
+ * styles.css
+ *
+ * Core styling for the OVRWRK Streetwear frontend application.
+ *
+ * CURRENT FUNCTIONALITY:
+ * - Resets and base styles for HTML, body, and root elements.
+ * - Styles for hero section, including responsive image positioning and sizing.
+ * - Layout and appearance for feature badges highlighting brand qualities.
+ * - Button and link styles with hover and focus effects using Bootstrap conventions.
+ * - Navigation bar styling ensuring proper height and overflow behavior.
+ * - Featured categories grid with interactive category cards including hover effects.
+ * - Full-screen search overlay with fade-in animation and styled input.
+ * - Modern product card styles with hover effects and quick add overlays.
+ * - Styles for quick add buttons, including size selection, disabled states, and add-to-cart button.
+ * - Responsive adjustments and accessibility considerations are partially included.
+ *
+ * FUTURE ENHANCEMENTS:
+ * - Improve accessibility.
+ * - Add support for dark mode or theme switching.
+ * - Optimize animations for performance on lower-end devices.
+ * - Modularize styles for better maintainability.
+ * - Add support for loading states and skeleton UI components.
+ */
+
+/* Reset and base styles */
 html, body, #root {
   margin: 0;
   padding: 0;
@@ -6,7 +32,7 @@ html, body, #root {
   box-sizing: border-box;
 }
 
-
+/* Hero Section */
 .hero-fullvw {
   width: 100%;
   position: relative;
@@ -14,7 +40,6 @@ html, body, #root {
   background: #fff;
   overflow-x: hidden;
 }
-
 
 .hero-img-bleed {
   position: absolute;
@@ -36,17 +61,16 @@ html, body, #root {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0;
-  box-shadow: none;
   background: #eee;
 }
-
 
 @media (max-width: 900px) {
   .hero-img-bleed {
     display: none;
   }
 }
+
+/* Hero Badges */
 .hero-badges-row {
   display: flex;
   align-items: center;
@@ -84,9 +108,12 @@ html, body, #root {
     padding-left: 1em;
     padding-right: 1em;
   }
-  .feature-badge { font-size: 0.98rem; }
+  .feature-badge {
+    font-size: 0.98rem;
+  }
 }
 
+/* Buttons and Links */
 .btn,
 button,
 .nav-link {
@@ -110,10 +137,14 @@ button:focus,
   color: #222 !important;
   border-color: #222 !important;
 }
+
+/* Navbar */
 .navbar {
   overflow: visible !important;
   min-height: 48px;
 }
+
+/* Featured Categories */
 .featured-categories-section {
   margin-top: 1em;
   width: 100%;
@@ -122,8 +153,6 @@ button:focus,
   padding-right: 1vw;
 }
 
-
-
 .category-card-link {
   text-decoration: none;
 }
@@ -131,9 +160,8 @@ button:focus,
 .category-card {
   position: relative;
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-
   box-shadow: 0 4px 18px rgba(50,50,50,0.07);
   transition: box-shadow 0.18s, transform 0.14s;
   cursor: pointer;
@@ -142,7 +170,8 @@ button:focus,
   align-items: flex-end;
 }
 
-.category-card:hover, .category-card:focus {
+.category-card:hover,
+.category-card:focus {
   box-shadow: 0 8px 32px rgba(34,34,34,0.11);
   transform: scale(1.035);
   z-index: 2;
@@ -180,6 +209,8 @@ button:focus,
   letter-spacing: 0.02em;
   color: #fff;
 }
+
+/* Search Overlay */
 .search-overlay {
   position: fixed;
   top: 56px;
@@ -194,10 +225,18 @@ button:focus,
   animation: searchFadeIn 0.21s;
   padding: 2.2em 0 1em 0;
 }
+
 @keyframes searchFadeIn {
-  from { opacity: 0; transform: translateY(-12px);}
-  to { opacity: 1; transform: none;}
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
+
 .search-overlay-form {
   width: 100%;
   max-width: 520px;
@@ -206,6 +245,7 @@ button:focus,
   box-shadow: 0 2px 14px rgba(50,50,50,0.09);
   padding: 0.3em 1.2em 0.3em 1.2em;
 }
+
 .search-overlay input.form-control {
   border: none;
   background: transparent;
@@ -213,17 +253,15 @@ button:focus,
   outline: none;
   box-shadow: none;
 }
+
 .search-overlay input.form-control:focus {
   outline: none;
   box-shadow: none;
 }
 
-
-
-
+/* Product Card */
 .modern-card {
   background: #fff;
-
   box-shadow: 0 4px 16px rgba(40,40,40,0.09);
   overflow: hidden;
   transition: box-shadow 0.18s, transform 0.12s;
@@ -245,7 +283,6 @@ button:focus,
   width: 100%;
   height: 270px;
   overflow: hidden;
-
   background: #f7f7f7;
 }
 
@@ -257,12 +294,14 @@ button:focus,
   transition: transform 0.18s;
 }
 
+/* Quick Add Overlay */
 .card-quickadd {
   position: absolute;
-  left: 0; right: 0; bottom: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(255,255,255,0.95);
   box-shadow: 0 -2px 18px rgba(50,50,50,0.10);
-
   z-index: 5;
   padding: 1.1em 1em 1em 1em;
   display: flex;
@@ -270,10 +309,18 @@ button:focus,
   align-items: center;
   animation: quickAddPop 0.18s;
 }
+
 @keyframes quickAddPop {
-  from { opacity: 0; transform: translateY(30px);}
-  to { opacity: 1; transform: translateY(0);}
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .quickadd-label {
   font-weight: bold;
   font-size: 0.98rem;
@@ -281,6 +328,7 @@ button:focus,
   letter-spacing: 0.01em;
   color: #222;
 }
+
 .quickadd-sizes {
   display: flex;
   gap: 0.5em;
@@ -288,6 +336,7 @@ button:focus,
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .quickadd-size-btn {
   background: #fff !important;
   color: #222 !important;
@@ -301,9 +350,13 @@ button:focus,
   outline: none;
 }
 
-.quickadd-size-btn.selected {
-  border: 2px solid #222 !important;
+.quickadd-size-btn.selected,
+.quickadd-size-btn.active {
+  box-shadow: 0 0 0 2.5px #000 !important;
+  border-color: #000 !important;
+  color: #000 !important;
 }
+
 
 .quickadd-size-btn:disabled,
 .quickadd-size-btn.disabled {
@@ -313,6 +366,7 @@ button:focus,
   cursor: not-allowed;
   opacity: 0.7;
 }
+
 .quickadd-cart-btn {
   background: #fff !important;
   color: #222 !important;
@@ -344,6 +398,7 @@ button:focus,
   opacity: 0.7;
 }
 
+/* Modern Card Info */
 .modern-card-info {
   flex: 1;
   display: flex;
@@ -351,21 +406,23 @@ button:focus,
   justify-content: center;
   padding: 1.2em 1.05em 1em 1.05em;
   background: #fff;
-
   min-height: 90px;
 }
+
 .modern-card-title {
   font-weight: 700;
   font-size: 1.15em;
   margin-bottom: 0.32em;
   color: #222;
 }
+
 .modern-card-price {
   color: #555;
   font-weight: 600;
   font-size: 1.07em;
   margin-bottom: 0.22em;
 }
+
 .modern-card-cat {
   font-size: 0.98em;
   color: #999;

@@ -1,40 +1,19 @@
-import React, { useState } from 'react';
-import { CartContext } from './CartContext';
-
-export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
-
-    const addToCart = (product, quantity = 1) => {
-        setCartItems(prev => {
-            const found = prev.find(item => item.product.id === product.id);
-            if (found) {
-                return prev.map(item =>
-                    item.product.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity }
-                        : item
-                );
-            }
-            return [...prev, { product, quantity }];
-        });
-    };
-
-    const removeFromCart = (productId) => {
-        setCartItems(prev => prev.filter(item => item.product.id !== productId));
-    };
-
-    const updateQuantity = (productId, quantity) => {
-        setCartItems(prev =>
-            prev.map(item =>
-                item.product.id === productId ? { ...item, quantity } : item
-            )
-        );
-    };
-
-    const clearCart = () => setCartItems([]);
-
-    return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQuantity, clearCart }}>
-            {children}
-        </CartContext.Provider>
-    );
-};
+/**
+ * CartProvider.jsx
+ *
+ * React context provider component responsible for managing and providing
+ * shopping cart state and actions to the app.
+ *
+ * CURRENT FUNCTIONALITY:
+ * - Currently empty / not implemented.
+ *
+ * FUTURE ENHANCEMENTS:
+ * - Manage cart items state (add, remove, update quantity).
+ * - Provide context values to enable cart manipulation across the app.
+ * - Integrate persistence mechanisms (e.g., localStorage or backend sync).
+ * - Handle cart-related side effects such as notifications or analytics.
+ *
+ * IMPORTANT NOTES:
+ * - Intended to wrap the app or relevant parts of the component tree.
+ * - Works in conjunction with CartContext.js.
+ */

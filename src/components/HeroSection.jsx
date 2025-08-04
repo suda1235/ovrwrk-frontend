@@ -1,3 +1,19 @@
+/**
+ * HeroSection.jsx
+ *
+ * A prominent hero/banner section component typically used on the homepage.
+ *
+ * CURRENT FUNCTIONALITY:
+ * - Displays a large title, subtitle, and a call-to-action button.
+ * - Shows a featured image alongside the text content.
+ * - Uses Bootstrap grid classes for responsive layout.
+ * - Supports customization via props: title, subtitle, button text/link, image source, and alt text.
+ *
+ * FUTURE ENHANCEMENTS:
+ * - Add support for multiple hero variants or dynamic content fetched from backend.
+ * - Implement accessibility improvements.
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 

@@ -1,3 +1,27 @@
+/**
+ * App.jsx
+ *
+ * Root component that sets up routing and common layout for the OVRWRK Streetwear frontend app.
+ *
+ * CURRENT FUNCTIONALITY:
+ * - Uses React Router to define routes for main pages: Landing, Shop, Product Details, Cart, Checkout, Payment, Confirmation, and About.
+ * - Maintains state to control visibility of a full-page search overlay.
+ * - Provides handlers for toggling and submitting search queries.
+ * - Includes persistent Header and Footer components rendered on every page.
+ * - Handles navigation via route elements and React Router’s <Routes> and <Route>.
+ *
+ * FUTURE ENHANCEMENTS:
+ * - Add user authentication and protected routes.
+ * - Implement global state management for shared data beyond search and cart.
+ * - Optimize routing with code splitting and lazy loading.
+ * - Add error boundaries or fallback UI for routing errors.
+ * - Improve accessibility.
+ *
+ * IMPORTANT NOTES:
+ * - Search overlay submission currently navigates to the Shop page with query parameters.
+ * - Header and Footer are always visible to provide consistent navigation and branding.
+ * - All imported page components must handle their own data fetching and state.
+ */
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage.jsx';

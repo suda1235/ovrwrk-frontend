@@ -1,3 +1,20 @@
+/**
+ * SearchOverlay.jsx
+ *
+ * A modal overlay component that provides a full-screen search input.
+ *
+ * CURRENT FUNCTIONALITY:
+ * - Displays a search input box when the `open` prop is true.
+ * - Automatically focuses the input field when opened.
+ * - Closes when button is clicked a second time
+ * - The UI and interaction are fully implemented.
+ *
+ * FUTURE ENHANCEMENTS:
+ * - Integrate search input with backend API to perform real-time product filtering.
+ * - Add search suggestions or autocomplete.
+ * - Enhance accessibility,
+ */
+
 import React, { useRef, useEffect, useState } from 'react';
 
 const SearchOverlay = ({ open, onClose, onSubmit }) => {

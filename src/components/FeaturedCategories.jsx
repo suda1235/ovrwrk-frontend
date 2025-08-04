@@ -1,3 +1,14 @@
+/**
+ * FeaturedCategoriesSection.jsx
+ *
+ * This component displays a responsive grid of featured product categories.
+ *
+ * CURRENT FUNCTIONALITY:
+ * - Renders category cards with an image and title.
+ * - Each card links to the corresponding category page via React Router.
+ * - Uses Bootstrap grid classes for responsive layout.
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 

@@ -1,3 +1,23 @@
+/**
+ * Header.jsx
+ *
+ * Main navigation header component for the site.
+ *
+ * CURRENT FUNCTIONALITY:
+ * - Displays the brand logo linking to the homepage.
+ * - Contains navigation links to Shop and About pages.
+ * - Shows a cart icon
+ * - Includes a toggle button to open/close the search overlay.
+ * - Highlights the active page link based on the current route.
+ * - Uses React Router for client-side navigation.
+ * - Consumes CartContext to access cart item count.
+ * - Uses Bootstrap for styling and layout.
+ *
+ * FUTURE ENHANCEMENTS:
+ * - Improve accessibility
+ * - Add dropdown menus or more navigation items.
+ */
+
 import React, { useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CartContext } from '../context/CartContext';
