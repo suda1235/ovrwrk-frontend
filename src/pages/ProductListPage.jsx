@@ -19,6 +19,7 @@
  * - Uses CATEGORY_ID_TO_NAME map for friendly category labels.
  */
 
+// ProductListPage.jsx
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
@@ -34,13 +35,10 @@ const CATEGORY_ID_TO_NAME = {
     111: "Accessories",
 };
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
-
-const ProductListPage = () => {
-    const query = useQuery();
-    const searchTerm = query.get("search")?.toLowerCase() || "";
+export default function ProductListPage() {
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const searchTerm = (query.get("search") || "").toLowerCase();
     const category = query.get("cat") || "";
 
     const [products, setProducts] = useState([]);
@@ -48,20 +46,22 @@ const ProductListPage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        // Fetch all products if no filters are set
         setLoading(true);
         setError(null);
-        let url = `${BASE_URL}/api/products?`;
-        if (category) url += `cat=${encodeURIComponent(category)}&`;
-        if (searchTerm) url += `search=${encodeURIComponent(searchTerm)}&`;
+
+        const params = new URLSearchParams();
+        if (category) params.set("cat", category);
+        if (searchTerm) params.set("search", searchTerm);
+
+        const url = `${BASE_URL}/api/products${params.toString() ? `?${params.toString()}` : ""}`;
 
         fetch(url)
             .then((res) => {
                 if (!res.ok) throw new Error("API error");
                 return res.json();
             })
-            .then((data) => {
-                setProducts(Array.isArray(data) ? data : []);
-            })
+            .then((data) => setProducts(Array.isArray(data) ? data : []))
             .catch((err) => {
                 setError("Failed to load products. " + err.message);
                 setProducts([]);
@@ -69,15 +69,18 @@ const ProductListPage = () => {
             .finally(() => setLoading(false));
     }, [searchTerm, category]);
 
+    const prettyCat = CATEGORY_ID_TO_NAME[category] || category;
+
     return (
         <div className="container my-5">
             <h2 className="mb-4">
                 {searchTerm
-                    ? `Results for "${searchTerm}"${category ? ` in ${CATEGORY_ID_TO_NAME[category] || category}` : ""}`
+                    ? `Results for "${searchTerm}"${category ? ` in ${prettyCat}` : ""}`
                     : category
-                        ? CATEGORY_ID_TO_NAME[category] || category
+                        ? prettyCat
                         : "All Products"}
             </h2>
+
             {loading ? (
                 <div>Loading...</div>
             ) : error ? (
@@ -98,6 +101,4 @@ const ProductListPage = () => {
             )}
         </div>
     );
-};
-
-export default ProductListPage;
+}
