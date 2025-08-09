@@ -34,6 +34,7 @@ import AboutPage from './pages/AboutPage.jsx';
 import Footer from "./components/Footer.jsx";
 import Header from "./components/Header.jsx";
 import SearchOverlay from "./components/SearchOverlay.jsx";
+import ErrorBoundary from "./components/ErrorBoundary.jsx"; // NEW
 
 import './App.css';
 
@@ -78,10 +79,12 @@ function AppInner() {
 
 export default function App() {
     return (
-        <CartProvider>
-            <Router>
-                <AppInner />
-            </Router>
-        </CartProvider>
+        <ErrorBoundary>
+            <CartProvider>
+                <Router>
+                    <AppInner />
+                </Router>
+            </CartProvider>
+        </ErrorBoundary>
     );
 }
