@@ -1,24 +1,23 @@
 /**
  * ProductDetailPage.jsx
  *
- * Displays detailed information about a single product including images, description, price, and available sizes.
+ * Displays detailed information for a single product and allows adding it to the cart.
  *
  * CURRENT FUNCTIONALITY:
- * - Fetches product data from backend API based on product ID from URL params.
- * - Shows product image, name, price, and description.
- * - Displays size options with availability status.
- * - Allows users to select a size and add the product with the selected size to the cart.
- * - Disables the Add to Cart button if the selected size is out of stock or no size is selected.
- * - Uses React Context to access cart functionality.
+ * - Fetches product data from backend using the product ID from URL params.
+ * - Displays product image, name, price, description, and available sizes.
+ * - Preselects the first available size.
+ * - Allows selecting a size and adding to cart (disabled if out of stock).
  *
  * FUTURE ENHANCEMENTS:
  * - Add quantity selection.
- * - Improve error handling and loading states.
- * - Enhance accessibility.
- * - Include product reviews, ratings, or related products.
+ * - Improve error/loading states with skeletons or better messaging.
+ * - Include product reviews, ratings, and related products.
+ * - Enhance accessibility for keyboard navigation.
  *
  * IMPORTANT NOTES:
- * - Depends on CartContext to manage adding items to cart with selected size.
+ * - Depends on CartContext for adding to cart.
+ * - Uses getFirstAvailable() to improve UX when loading product sizes.
  */
 
 import React, { useContext, useEffect, useState } from 'react';
@@ -27,43 +26,51 @@ import { CartContext } from '../context/CartContext';
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
+function getFirstAvailable(sizesArr) {
+    if (!sizesArr || !sizesArr.length) return "";
+    const available = sizesArr.find(sz => sz.stock > 0);
+    return available ? available.size : sizesArr[0].size;
+}
+
 export default function ProductDetailPage() {
     const { id } = useParams();
     const { addToCart } = useContext(CartContext);
 
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const sizes = Array.isArray(product?.ProductSize)
-        ? product.ProductSize.map(ps => ({
-            size: ps.Size?.size || '',
-            stock: ps.stock ?? 0
-        }))
-        : [];
-
-    const getFirstAvailable = sizesArr => {
-        if (!sizesArr || !sizesArr.length) return "";
-        const available = sizesArr.find(sz => sz.stock > 0);
-        return available ? available.size : sizesArr[0].size;
-    };
-
-    const [selectedSize, setSelectedSize] = useState(getFirstAvailable(sizes));
+    const [selectedSize, setSelectedSize] = useState("");
 
     useEffect(() => {
-        setSelectedSize(getFirstAvailable(sizes));
-    }, [product]);
-
-    useEffect(() => {
-        fetch(`${BASE_URL}/api/products/${id}`)
-            .then(res => res.json())
-            .then(data => {
+        (async () => {
+            try {
+                const res = await fetch(`${BASE_URL}/api/products/${id}`);
+                const data = await res.json();
                 setProduct(data);
+
+                if (Array.isArray(data?.ProductSize)) {
+                    const sizeList = data.ProductSize.map(ps => ({
+                        size: ps.Size?.size || "",
+                        stock: ps.stock ?? 0
+                    }));
+                    setSelectedSize(getFirstAvailable(sizeList));
+                }
+            } catch (err) {
+                console.error("Failed to load product:", err);
+            } finally {
                 setLoading(false);
-            });
+            }
+        })();
     }, [id]);
 
     if (loading) return <div className="container py-5">Loading...</div>;
     if (!product) return <div className="container py-5">Product not found.</div>;
+
+    const sizes = Array.isArray(product.ProductSize)
+        ? product.ProductSize.map(ps => ({
+            size: ps.Size?.size || "",
+            stock: ps.stock ?? 0
+        }))
+        : [];
 
     const selected = sizes.find(sz => sz.size === selectedSize);
 
@@ -104,7 +111,11 @@ export default function ProductDetailPage() {
 
                     <button
                         className="btn btn-dark mt-3"
-                        onClick={() => addToCart(product, 1, selectedSize)}
+                        onClick={() => {
+                            if (selectedSize) {
+                                addToCart(product, { size: selectedSize, quantity: 1 });
+                            }
+                        }}
                         disabled={!selected || selected.stock === 0}
                     >
                         Add to Cart

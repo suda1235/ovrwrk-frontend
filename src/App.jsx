@@ -22,19 +22,28 @@
  * - Header and Footer are always visible to provide consistent navigation and branding.
  * - All imported page components must handle their own data fetching and state.
  */
+/**
+ * App.jsx
+ *
+ * Root component that sets up routing and common layout for the OVRWRK Streetwear frontend app.
+ */
+
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import CartProvider from './context/CartProvider.jsx'; // <-- provider moved here
+
 import LandingPage from './pages/LandingPage.jsx';
 import ProductListPage from './pages/ProductListPage.jsx';
-import ProductDetailsPage from './pages/ProductDetailsPage.jsx';
+import ProductDetailsPage from './pages/ProductDetailsPage.jsx'; // <-- fixed name
 import CartPage from './pages/CartPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
-import PaymentPage from './pages/PaymentPage.jsx';
 import ConfirmationPage from './pages/ConfirmationPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
+
 import Footer from "./components/Footer.jsx";
 import Header from "./components/Header.jsx";
 import SearchOverlay from "./components/SearchOverlay.jsx";
+
 import './App.css';
 
 function App() {
@@ -47,32 +56,34 @@ function App() {
     };
 
     return (
-        <Router>
-            <Header
-                showSearch={showSearch}
-                onSearchClick={() => setShowSearch(prev => !prev)}
-            />
+        <CartProvider>
+            <Router>
+                <Header
+                    showSearch={showSearch}
+                    onSearchClick={() => setShowSearch(prev => !prev)}
+                />
 
-            <SearchOverlay
-                open={showSearch}
-                onClose={() => setShowSearch(false)}
-                onSubmit={handleSearch}
-            />
+                <SearchOverlay
+                    open={showSearch}
+                    onClose={() => setShowSearch(false)}
+                    onSubmit={handleSearch}
+                />
 
-            <main className="flex-shrink-0">
-                <Routes>
-                    <Route path="/" element={<LandingPage />} />
-                    <Route path="/shop" element={<ProductListPage />} />
-                    <Route path="/product/:id" element={<ProductDetailsPage />} />
-                    <Route path="/cart" element={<CartPage />} />
-                    <Route path="/checkout" element={<CheckoutPage />} />
-                    <Route path="/payment" element={<PaymentPage />} />
-                    <Route path="/confirmation" element={<ConfirmationPage />} />
-                    <Route path="/about" element={<AboutPage />} />
-                </Routes>
-            </main>
-            <Footer />
-        </Router>
+                <main className="flex-shrink-0">
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/shop" element={<ProductListPage />} />
+                        <Route path="/product/:id" element={<ProductDetailsPage />} />
+                        <Route path="/cart" element={<CartPage />} />
+                        <Route path="/checkout" element={<CheckoutPage />} />
+                        <Route path="/confirmation" element={<ConfirmationPage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                    </Routes>
+                </main>
+
+                <Footer />
+            </Router>
+        </CartProvider>
     );
 }
 

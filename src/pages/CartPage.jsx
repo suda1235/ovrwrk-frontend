@@ -1,33 +1,80 @@
 /**
  * CartPage.jsx
  *
- * Placeholder page for the shopping cart.
+ * Page component displaying the user's shopping cart.
  *
  * CURRENT FUNCTIONALITY:
- * - Displays a simple message indicating the cart feature is under development.
- * - Uses Bootstrap container and spacing classes for layout.
+ * - Renders a list of items in the cart using CartItem component.
+ * - Shows subtotal and a note about taxes/shipping.
+ * - Allows clearing the cart or proceeding to checkout.
+ * - Displays an empty-cart message with a link back to the shop.
  *
  * FUTURE ENHANCEMENTS:
- * - Display a list of items added to the cart with details such as product name, size, quantity, and price.
- * - Allow users to update quantities and remove items from the cart.
- * - Show cart subtotal and total prices.
- * - Integrate with backend or persistent storage for saving cart state.
- * - Improve UI/UX with responsive design and accessibility considerations.
+ * - Add per-item discount display or promotions.
+ * - Integrate with backend for persistent cart sync.
+ * - Show estimated tax and shipping costs.
  *
  * IMPORTANT NOTES:
- * - Currently a static placeholder to maintain routing structure.
- * - Will require CartContext and CartProvider integration for full functionality.
+ * - Relies on useCart() from CartContext for state and actions.
+ * - Subtotal is calculated in cents to avoid floating-point issues.
  */
 
 import React from 'react';
+import { useCart } from '../context/CartContext';
+import CartItem from '../components/CartItem';
+import { Link, useNavigate } from 'react-router-dom';
 
-function CartPage() {
+export default function CartPage() {
+    const { cartItems, totals, updateQuantity, removeFromCart, clearCart } = useCart();
+    const navigate = useNavigate();
+    const empty = cartItems.length === 0;
+
     return (
         <div className="container my-5">
-            <h2>Your Cart</h2>
-            <p>Cart goes here — coming soon!</p>
+            <h2 className="mb-4">Your Cart</h2>
+
+            {empty ? (
+                <div className="alert alert-light">
+                    Your cart is empty. <Link to="/shop">Continue shopping →</Link>
+                </div>
+            ) : (
+                <>
+                    {cartItems.map(item => (
+                        <CartItem
+                            key={item.id}
+                            item={item}
+                            onQty={updateQuantity}
+                            onRemove={removeFromCart}
+                        />
+                    ))}
+
+                    <div className="d-flex justify-content-end mt-3">
+                        <div style={{ minWidth: 280 }}>
+                            <div className="d-flex justify-content-between">
+                                <span className="fw-semibold">Subtotal</span>
+                                <span className="fw-bold">${(totals.subtotalCents / 100).toFixed(2)}</span>
+                            </div>
+                            <div className="text-muted small">
+                                Taxes and shipping calculated at checkout.
+                            </div>
+                            <div className="d-grid gap-2 mt-3">
+                                <button
+                                    className="btn btn-dark"
+                                    onClick={() => navigate('/checkout')}
+                                >
+                                    Checkout
+                                </button>
+                                <button
+                                    className="btn btn-outline-secondary"
+                                    onClick={clearCart}
+                                >
+                                    Clear Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
-
-export default CartPage;

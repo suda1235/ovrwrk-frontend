@@ -1,24 +1,22 @@
 /**
  * ProductListPage.jsx
  *
- * Displays a list of products with optional filtering by search term and category.
+ * Displays a list of products with optional search and category filtering.
  *
  * CURRENT FUNCTIONALITY:
- * - Reads search and category parameters from the URL query string.
- * - Fetches filtered product data from backend API.
- * - Shows loading, error, and empty states appropriately.
- * - Renders a responsive grid of ProductCard components for each product.
- * - Supports adding products to the cart via the `onAddToCart` callback prop.
+ * - Reads "search" and "cat" query parameters from the URL.
+ * - Fetches filtered products from backend.
+ * - Handles loading, error, and empty results states.
+ * - Renders products in a responsive grid using ProductCard.
  *
  * FUTURE ENHANCEMENTS:
- * - Add pagination or infinite scrolling for large product lists.
- * - Implement advanced filtering and sorting options.
- * - Improve error handling and retry mechanisms.
- * - Enhance UI/UX with loading skeletons and accessibility improvements.
+ * - Add pagination or infinite scrolling.
+ * - Implement sorting and advanced filters.
+ * - Improve loading state with skeletons.
  *
  * IMPORTANT NOTES:
- * - Relies on backend API to support `search` and `cat` query parameters.
- * - Category names are mapped from IDs in `CATEGORY_ID_TO_NAME`.
+ * - Depends on backend API supporting `search` and `cat` query params.
+ * - Uses CATEGORY_ID_TO_NAME map for friendly category labels.
  */
 
 import React, { useState, useEffect } from "react";
@@ -40,7 +38,7 @@ function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 
-const ProductListPage = ({ onAddToCart }) => {
+const ProductListPage = () => {
     const query = useQuery();
     const searchTerm = query.get("search")?.toLowerCase() || "";
     const category = query.get("cat") || "";
@@ -75,11 +73,7 @@ const ProductListPage = ({ onAddToCart }) => {
         <div className="container my-5">
             <h2 className="mb-4">
                 {searchTerm
-                    ? `Results for "${searchTerm}"${
-                        category
-                            ? ` in ${CATEGORY_ID_TO_NAME[category] || category}`
-                            : ""
-                    }`
+                    ? `Results for "${searchTerm}"${category ? ` in ${CATEGORY_ID_TO_NAME[category] || category}` : ""}`
                     : category
                         ? CATEGORY_ID_TO_NAME[category] || category
                         : "All Products"}
@@ -93,8 +87,11 @@ const ProductListPage = ({ onAddToCart }) => {
             ) : (
                 <div className="row g-4">
                     {products.map((prod) => (
-                        <div className="col-12 col-sm-6 col-lg-4 col-xl-3" key={prod.product_id || prod.id}>
-                            <ProductCard prod={prod} onAddToCart={onAddToCart} />
+                        <div
+                            className="col-12 col-sm-6 col-lg-4 col-xl-3"
+                            key={prod.product_id || prod.id}
+                        >
+                            <ProductCard prod={prod} />
                         </div>
                     ))}
                 </div>
